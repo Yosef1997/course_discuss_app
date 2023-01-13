@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:course_discuss_app/model/user.dart';
 import 'package:d_method/d_method.dart';
 import 'package:http/http.dart';
 
@@ -29,7 +30,7 @@ class FollowSource {
     String fromIdUser,
     String toIdUser,
   ) async {
-    String url = '${Api.user}/following.php';
+    String url = '${Api.follow}/following.php';
     try {
       Response response = await Client().post(Uri.parse(url), body: {
         'from_id_user': fromIdUser,
@@ -48,7 +49,7 @@ class FollowSource {
     String fromIdUser,
     String toIdUser,
   ) async {
-    String url = '${Api.user}/no_following.php';
+    String url = '${Api.follow}/no_following.php';
     try {
       Response response = await Client().post(Uri.parse(url), body: {
         'from_id_user': fromIdUser,
@@ -60,6 +61,28 @@ class FollowSource {
     } catch (err) {
       DMethod.printTitle('Follow Source - noFollowing', err.toString());
       return false;
+    }
+  }
+
+  static Future<List<User>> readFollower(String idUser) async {
+    String url = '${Api.follow}/read_follower.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'id_user': idUser,
+      });
+      DMethod.printTitle('Follow Source - readFollower', response.body);
+      Map responseBody = jsonDecode(response.body);
+      if (responseBody['success']) {
+        List list = responseBody['data'];
+        return list.map((e) {
+          Map<String, dynamic> item = Map<String, dynamic>.from(e);
+          return User.fromJson(item);
+        }).toList();
+      }
+      return [];
+    } catch (err) {
+      DMethod.printTitle('Follow Source - readFollower', err.toString());
+      return [];
     }
   }
 }
