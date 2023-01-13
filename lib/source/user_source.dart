@@ -4,6 +4,8 @@ import 'package:course_discuss_app/config/api.dart';
 import 'package:d_method/d_method.dart';
 import 'package:http/http.dart';
 
+import '../model/user.dart';
+
 class UserSource {
   static Future<Map> register(String username, String password) async {
     String url = '${Api.user}/register.php';
@@ -76,6 +78,28 @@ class UserSource {
         'follower': 0.0,
         'following': 0.0,
       };
+    }
+  }
+
+  static Future<List<User>> search(String searchQuery) async {
+    String url = '${Api.user}/search.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'search_query': searchQuery,
+      });
+      DMethod.printTitle('User Source - search', response.body);
+      Map responseBody = jsonDecode(response.body);
+      if (responseBody['success']) {
+        List list = responseBody['data'];
+        return list.map((e) {
+          Map<String, dynamic> item = Map<String, dynamic>.from(e);
+          return User.fromJson(item);
+        }).toList();
+      }
+      return [];
+    } catch (err) {
+      DMethod.printTitle('User Source - search', err.toString());
+      return [];
     }
   }
 }
