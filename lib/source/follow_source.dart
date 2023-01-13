@@ -85,4 +85,26 @@ class FollowSource {
       return [];
     }
   }
+
+  static Future<List<User>> readFollowing(String idUser) async {
+    String url = '${Api.follow}/read_following.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'id_user': idUser,
+      });
+      DMethod.printTitle('Follow Source - readFollowing', response.body);
+      Map responseBody = jsonDecode(response.body);
+      if (responseBody['success']) {
+        List list = responseBody['data'];
+        return list.map((e) {
+          Map<String, dynamic> item = Map<String, dynamic>.from(e);
+          return User.fromJson(item);
+        }).toList();
+      }
+      return [];
+    } catch (err) {
+      DMethod.printTitle('Follow Source - readFollowing', err.toString());
+      return [];
+    }
+  }
 }
