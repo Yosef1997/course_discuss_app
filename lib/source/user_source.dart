@@ -36,4 +36,27 @@ class UserSource {
       return {'success': false};
     }
   }
+
+  static Future<Map> updateImage(
+    String id,
+    String oldImage,
+    String newImage,
+    String newBase64code,
+  ) async {
+    String url = '${Api.user}/update_image.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'id': id,
+        'old_image': oldImage,
+        'new_image': newImage,
+        'new_base64code': newBase64code,
+      });
+      DMethod.printTitle('User Source - updateImage', response.body);
+      Map responseBody = jsonDecode(response.body);
+      return responseBody;
+    } catch (err) {
+      DMethod.printTitle('User Source - updateImage', err.toString());
+      return {'success': false};
+    }
+  }
 }
