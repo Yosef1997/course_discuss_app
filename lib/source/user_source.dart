@@ -59,4 +59,23 @@ class UserSource {
       return {'success': false};
     }
   }
+
+  static Future<Map<String, dynamic>> stat(String idUser) async {
+    String url = '${Api.user}/stat.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'id_user': idUser,
+      });
+      DMethod.printTitle('User Source - stat', response.body);
+      Map<String, dynamic> responseBody = jsonDecode(response.body);
+      return responseBody;
+    } catch (err) {
+      DMethod.printTitle('User Source - stat', err.toString());
+      return {
+        'topic': 0.0,
+        'follower': 0.0,
+        'following': 0.0,
+      };
+    }
+  }
 }
