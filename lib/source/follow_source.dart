@@ -24,4 +24,23 @@ class FollowSource {
       return false;
     }
   }
+
+  static Future<bool> following(
+    String fromIdUser,
+    String toIdUser,
+  ) async {
+    String url = '${Api.user}/following.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'from_id_user': fromIdUser,
+        'to_id_user': toIdUser,
+      });
+      DMethod.printTitle('Follow Source - following', response.body);
+      Map responseBody = jsonDecode(response.body);
+      return responseBody['success'];
+    } catch (err) {
+      DMethod.printTitle('Follow Source - following', err.toString());
+      return false;
+    }
+  }
 }
