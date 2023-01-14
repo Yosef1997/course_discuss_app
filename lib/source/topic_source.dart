@@ -30,4 +30,25 @@ class TopicSource {
       return false;
     }
   }
+
+  static Future<bool> update(
+    String id,
+    String title,
+    String description,
+  ) async {
+    String url = '${Api.topic}/update.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'title': title,
+        'description': description,
+        'id': id,
+      });
+      DMethod.printTitle('Topic Source - update', response.body);
+      Map responseBody = jsonDecode(response.body);
+      return responseBody['success'];
+    } catch (err) {
+      DMethod.printTitle('Topic Source - update', err.toString());
+      return false;
+    }
+  }
 }
