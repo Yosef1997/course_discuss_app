@@ -91,4 +91,26 @@ class TopicSource {
       return [];
     }
   }
+
+  static Future<List<Topic>> readFeed(String idUser) async {
+    String url = '${Api.topic}/read_feed.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'id_user': idUser,
+      });
+      DMethod.printTitle('Topic Source - readFeed', response.body);
+      Map responseBody = jsonDecode(response.body);
+      if (responseBody['success']) {
+        List list = responseBody['data'];
+        return list.map((e) {
+          Map<String, dynamic> item = Map<String, dynamic>.from(e);
+          return Topic.fromJson(item);
+        }).toList();
+      }
+      return [];
+    } catch (err) {
+      DMethod.printTitle('Topic Source - readFeed', err.toString());
+      return [];
+    }
+  }
 }
