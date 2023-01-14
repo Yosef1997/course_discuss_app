@@ -32,4 +32,23 @@ class CommentSource {
       return false;
     }
   }
+
+  static Future<bool> delete(
+    String id,
+    String image,
+  ) async {
+    String url = '${Api.comment}/delete.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'id': id,
+        'image': image,
+      });
+      DMethod.printTitle('Comment Source - delete', response.body);
+      Map responseBody = jsonDecode(response.body);
+      return responseBody['success'];
+    } catch (err) {
+      DMethod.printTitle('Comment Source - delete', err.toString());
+      return false;
+    }
+  }
 }
