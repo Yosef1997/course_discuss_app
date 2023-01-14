@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:course_discuss_app/model/comment.dart';
 import 'package:d_method/d_method.dart';
 import 'package:http/http.dart';
 
@@ -49,6 +50,28 @@ class CommentSource {
     } catch (err) {
       DMethod.printTitle('Comment Source - delete', err.toString());
       return false;
+    }
+  }
+
+  static Future<List<Comment>> read(String idTopic) async {
+    String url = '${Api.comment}/read.php';
+    try {
+      Response response = await Client().post(Uri.parse(url), body: {
+        'id_topic': idTopic,
+      });
+      DMethod.printTitle('Comment Source - read', response.body);
+      Map responseBody = jsonDecode(response.body);
+      if (responseBody['success']) {
+        List list = responseBody['data'];
+        return list.map((e) {
+          Map<String, dynamic> item = Map<String, dynamic>.from(e);
+          return Comment.fromJson(item);
+        }).toList();
+      }
+      return [];
+    } catch (err) {
+      DMethod.printTitle('Comment Source - read', err.toString());
+      return [];
     }
   }
 }
