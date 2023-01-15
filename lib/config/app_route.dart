@@ -1,8 +1,11 @@
 import 'package:course_discuss_app/config/session.dart';
+import 'package:course_discuss_app/controller/c_add_topic.dart';
 import 'package:course_discuss_app/page/error_page.dart';
 import 'package:course_discuss_app/page/home_page.dart';
 import 'package:course_discuss_app/page/login_page.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../model/user.dart';
 import '../page/register_page.dart';
@@ -11,6 +14,7 @@ class AppRoute {
   static const home = '/';
   static const login = '/login';
   static const register = '/register';
+  static const addTopic = '/add-topic';
 
   static GoRouter routerConfig = GoRouter(
     errorBuilder: (context, state) => ErrorPage(
@@ -39,6 +43,13 @@ class AppRoute {
       GoRoute(
         path: login,
         builder: (context, state) => const RegisterPage(),
+      ),
+      GoRoute(
+        path: addTopic,
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (context) => CAddTopic(),
+          child: const Scaffold(),
+        ),
       )
     ],
   );
