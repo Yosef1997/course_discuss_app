@@ -17,6 +17,7 @@ class AppRoute {
   static const register = '/register';
   static const addTopic = '/add-topic';
   static const profile = '/profile';
+  static const search = '/search';
 
   static GoRouter routerConfig = GoRouter(
     errorBuilder: (context, state) => ErrorPage(
@@ -59,7 +60,14 @@ class AppRoute {
           create: (_) => CProfile(),
           child: const Scaffold(),
         ),
-      )
+      ),
+      GoRoute(
+        path: search,
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (_) => CProfile(),
+          child: const Scaffold(),
+        ),
+      ),
     ],
   );
 }
