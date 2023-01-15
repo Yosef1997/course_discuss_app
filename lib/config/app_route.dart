@@ -1,6 +1,8 @@
 import 'package:course_discuss_app/config/session.dart';
 import 'package:course_discuss_app/controller/c_add_topic.dart';
+import 'package:course_discuss_app/controller/c_follower.dart';
 import 'package:course_discuss_app/controller/c_profile.dart';
+import 'package:course_discuss_app/controller/c_search.dart';
 import 'package:course_discuss_app/page/error_page.dart';
 import 'package:course_discuss_app/page/home_page.dart';
 import 'package:course_discuss_app/page/login_page.dart';
@@ -18,6 +20,7 @@ class AppRoute {
   static const addTopic = '/add-topic';
   static const profile = '/profile';
   static const search = '/search';
+  static const follower = '/follower';
 
   static GoRouter routerConfig = GoRouter(
     errorBuilder: (context, state) => ErrorPage(
@@ -64,7 +67,14 @@ class AppRoute {
       GoRoute(
         path: search,
         builder: (context, state) => ChangeNotifierProvider(
-          create: (_) => CProfile(),
+          create: (_) => CSearch(),
+          child: const Scaffold(),
+        ),
+      ),
+      GoRoute(
+        path: follower,
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (_) => CFollower(),
           child: const Scaffold(),
         ),
       ),
