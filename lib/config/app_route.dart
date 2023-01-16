@@ -48,10 +48,10 @@ class AppRoute {
       ),
       GoRoute(
         path: login,
-        builder: (context, state) => const LoginPage(),
+        builder: (context, state) => LoginPage(),
       ),
       GoRoute(
-        path: login,
+        path: register,
         builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
