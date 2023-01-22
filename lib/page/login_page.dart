@@ -17,21 +17,25 @@ class LoginPage extends StatelessWidget {
   final controllerPassword = TextEditingController();
 
   login(BuildContext context) {
-    UserSource.login(controllerUsername.text, controllerPassword.text)
-        .then((responseBody) {
-      if (responseBody['success']) {
-        var mapUser = Map<String, dynamic>.from(responseBody['data']);
-        User user = User.fromJson(mapUser);
-        Session.setUser(user);
-        context.read<CUser>().data = user;
-        DInfo.snackBarSuccess(context, 'Login Success');
-        DInfo.closeDialog(context, actionAfterClose: () {
-          // context.go(AppRoute.home);
-        });
-      } else {
-        DInfo.snackBarError(context, 'Login Failed');
-      }
-    });
+    try {
+      UserSource.login(controllerUsername.text, controllerPassword.text)
+          .then((responseBody) {
+        if (responseBody['success']) {
+          var mapUser = Map<String, dynamic>.from(responseBody['data']);
+          User user = User.fromJson(mapUser);
+          Session.setUser(user);
+          context.read<CUser>().data = user;
+          DInfo.dialogSuccess(context, 'Login Success');
+          DInfo.closeDialog(context, actionAfterClose: () {
+            // context.go(AppRoute.home);
+          });
+        } else {
+          DInfo.snackBarError(context, 'Login Failed');
+        }
+      });
+    } catch (err) {
+      debugPrint('$err');
+    }
   }
 
   @override
@@ -45,76 +49,86 @@ class LoginPage extends StatelessWidget {
             colors: [Colors.blue, Colors.purple],
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            DView.nothing(),
-            Card(
-              margin: const EdgeInsets.all(16),
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+        child: LayoutBuilder(builder: (context, Constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: Constraints.maxHeight,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    DView.textTitle('Login First'),
-                    DView.spaceHeight(8),
-                    const Divider(),
-                    DView.spaceHeight(4),
-                    DInput(
-                      controller: controllerUsername,
-                      title: 'Username',
-                      spaceTitle: 4,
-                    ),
-                    DView.spaceHeight(),
-                    DInput(
-                      controller: controllerPassword,
-                      title: 'Password',
-                      spaceTitle: 4,
-                    ),
-                    DView.spaceHeight(),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          login(context);
-                        },
-                        child: const Text('Login'),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Belum punya akun?',
-                    style: TextStyle(
-                      color: Colors.white70,
+                  DView.nothing(),
+                  Card(
+                    margin: const EdgeInsets.all(16),
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          DView.textTitle('Login First'),
+                          DView.spaceHeight(8),
+                          const Divider(),
+                          DView.spaceHeight(4),
+                          DInput(
+                            controller: controllerUsername,
+                            title: 'Username',
+                            spaceTitle: 4,
+                          ),
+                          DView.spaceHeight(),
+                          DInput(
+                            controller: controllerPassword,
+                            title: 'Password',
+                            spaceTitle: 4,
+                          ),
+                          DView.spaceHeight(),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                login(context);
+                              },
+                              child: const Text('Login'),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      context.push(AppRoute.register);
-                    },
-                    child: const Text(
-                      'Register here',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Belum punya akun?',
+                          style: TextStyle(
+                            color: Colors.white70,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.push(AppRoute.register);
+                          },
+                          child: const Text(
+                            'Register here',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   )
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          );
+        }),
       ),
     );
   }
