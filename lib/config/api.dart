@@ -1,6 +1,6 @@
 class Api {
-  // static const _baseUrl = "http://10.0.2.2:8012/course_api_discuss";
-  static const _baseUrl = "http://192.168.100.9:8012/course_api_discuss";
+  static const _baseUrl = "http://10.0.2.2:8012/course_api_discuss";
+  // static const _baseUrl = "http://192.168.100.9:8012/course_api_discuss";
   static const comment = "$_baseUrl/comment";
   static const follow = "$_baseUrl/follow";
   static const topic = "$_baseUrl/topic";
