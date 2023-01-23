@@ -37,7 +37,7 @@ class UserSource {
     }
   }
 
-  static Future<Map> updateImage(
+  static Future<bool> updateImage(
     String id,
     String oldImage,
     String newImage,
@@ -53,10 +53,10 @@ class UserSource {
       });
       DMethod.printTitle('User Source - updateImage', response.body);
       Map responseBody = jsonDecode(response.body);
-      return responseBody;
+      return responseBody['success'];
     } catch (err) {
       DMethod.printTitle('User Source - updateImage', err.toString());
-      return {'success': false};
+      return false;
     }
   }
 }
