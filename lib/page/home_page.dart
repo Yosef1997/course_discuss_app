@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
         'view': const MyTopicFragment(),
       },
       {
-        'icon': Icons.feed,
+        'icon': Icons.account_circle,
         'label': 'Account',
         'view': const AccountFragment(),
       },
@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
           showUnselectedLabels: false,
           items: menu.map((e) {
             return BottomNavigationBarItem(
-                icon: Icon(e['label']), label: e['label']);
+                icon: Icon(e['icon']), label: e['label']);
           }).toList(),
         ),
       );
