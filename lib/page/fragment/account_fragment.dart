@@ -5,6 +5,7 @@ import 'package:course_discuss_app/config/app_format.dart';
 import 'package:course_discuss_app/config/app_route.dart';
 import 'package:course_discuss_app/config/session.dart';
 import 'package:course_discuss_app/controller/c_account.dart';
+import 'package:course_discuss_app/controller/c_home.dart';
 import 'package:course_discuss_app/model/user.dart';
 import 'package:course_discuss_app/source/user_source.dart';
 import 'package:d_info/d_info.dart';
@@ -27,7 +28,7 @@ class AccountFragment extends StatelessWidget {
         Session.clearUser().then((success) {
           if (success) {
             context.read<CUser>().data = null;
-            context.read().indexMenu = 0;
+            context.read<CHome>().indexMenu = 0;
             context.go(AppRoute.login);
           }
         });
