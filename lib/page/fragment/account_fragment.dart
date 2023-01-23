@@ -1,8 +1,18 @@
+import 'dart:convert';
+
 import 'package:course_discuss_app/config/api.dart';
 import 'package:course_discuss_app/config/app_format.dart';
+import 'package:course_discuss_app/config/app_route.dart';
+import 'package:course_discuss_app/config/session.dart';
 import 'package:course_discuss_app/controller/c_account.dart';
+import 'package:course_discuss_app/model/user.dart';
+import 'package:course_discuss_app/source/user_source.dart';
+import 'package:d_info/d_info.dart';
 import 'package:d_view/d_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/c_user.dart';
@@ -10,7 +20,51 @@ import '../../controller/c_user.dart';
 class AccountFragment extends StatelessWidget {
   const AccountFragment({super.key});
 
-  logout(BuildContext context) {}
+  logout(BuildContext context) {
+    DInfo.dialogConfirmation(context, 'Logout', 'Tap Yes to confirm')
+        .then((yes) {
+      if (yes ?? false) {
+        Session.clearUser().then((success) {
+          if (success) {
+            context.read<CUser>().data = null;
+            context.read().indexMenu = 0;
+            context.go(AppRoute.login);
+          }
+        });
+      }
+    });
+  }
+
+  updateImage(BuildContext context) {
+    ImagePicker().pickImage(source: ImageSource.gallery).then((image) {
+      if (image != null) {
+        String idUser = context.read<CUser>().data!.id;
+        String oldImage = context.read<CUser>().data!.image;
+        DInfo.dialogConfirmation(context, 'Update', 'yes to confirm')
+            .then((yes) async {
+          if (yes ?? false) {
+            String name = image.name;
+            Uint8List bytes = await image.readAsBytes();
+            UserSource.updateImage(
+              idUser,
+              oldImage,
+              name,
+              base64Encode(bytes),
+            ).then((success) {
+              if (success) {
+                User? newUser = context.read<CUser>().data!..image;
+                context.read<CUser>().data = newUser;
+                Session.setUser(newUser);
+                DInfo.snackBarSuccess(context, 'Success Update Image');
+              } else {
+                DInfo.snackBarError(context, 'Update Image Failed');
+              }
+            });
+          }
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +114,15 @@ class AccountFragment extends StatelessWidget {
                   borderRadius: BorderRadius.circular(90),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(90),
-                    child: Image.network(
-                      '${Api.imageUser}/${cUser.data!.image}',
-                      fit: BoxFit.cover,
-                      width: widthBoxImage - 20,
-                      height: widthBoxImage - 20,
+                    child: Consumer<CUser>(
+                      builder: (contextConsumerUser, _, child) {
+                        return Image.network(
+                          '${Api.imageUser}/${_.data!.image}',
+                          fit: BoxFit.cover,
+                          width: widthBoxImage - 20,
+                          height: widthBoxImage - 20,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -74,6 +132,7 @@ class AccountFragment extends StatelessWidget {
         ),
         DView.spaceHeight(12),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               height: 30,
@@ -85,13 +144,16 @@ class AccountFragment extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
               ),
               alignment: Alignment.center,
-              child: DView.textTitle(cUser.data!.username, color: Colors.white),
+              child: DView.textTitle(
+                context.watch<CUser>().data!.username,
+                color: Colors.white,
+              ),
             ),
             DView.spaceWidth(),
             SizedBox(
               height: 30,
               child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () => updateImage(context),
                   icon: const Icon(
                     Icons.edit,
                     size: 14,
