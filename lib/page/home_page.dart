@@ -1,9 +1,11 @@
+import 'package:course_discuss_app/config/app_route.dart';
 import 'package:course_discuss_app/controller/c_home.dart';
 import 'package:course_discuss_app/page/fragment/account_fragment.dart';
 import 'package:course_discuss_app/page/fragment/explore_fragment.dart';
 import 'package:course_discuss_app/page/fragment/feed_fragment.dart';
 import 'package:course_discuss_app/page/fragment/my_topic_fragment.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,7 +42,9 @@ class HomePage extends StatelessWidget {
           child: menu[_.indexMenu]['view'],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            context.push(AppRoute.addTopic);
+          },
           mini: true,
           tooltip: 'Create New Topic',
           child: const Icon(Icons.create),
