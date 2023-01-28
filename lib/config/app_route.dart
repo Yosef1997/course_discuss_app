@@ -5,6 +5,7 @@ import 'package:course_discuss_app/controller/c_follower.dart';
 import 'package:course_discuss_app/controller/c_following.dart';
 import 'package:course_discuss_app/controller/c_profile.dart';
 import 'package:course_discuss_app/controller/c_search.dart';
+import 'package:course_discuss_app/page/add_topic.dart';
 import 'package:course_discuss_app/page/error_page.dart';
 import 'package:course_discuss_app/page/home_page.dart';
 import 'package:course_discuss_app/page/login_page.dart';
@@ -58,7 +59,7 @@ class AppRoute {
         path: addTopic,
         builder: (context, state) => ChangeNotifierProvider(
           create: (_) => CAddTopic(),
-          child: const Scaffold(),
+          child: const AddTopic(),
         ),
       ),
       GoRoute(
