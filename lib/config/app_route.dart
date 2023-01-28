@@ -59,7 +59,7 @@ class AppRoute {
         path: addTopic,
         builder: (context, state) => ChangeNotifierProvider(
           create: (_) => CAddTopic(),
-          child: const AddTopic(),
+          child: AddTopic(),
         ),
       ),
       GoRoute(
