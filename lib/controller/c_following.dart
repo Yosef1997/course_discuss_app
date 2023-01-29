@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 class CFollowing extends ChangeNotifier {
   List<User> _list = [];
-  List<User> get users => _list;
+  List<User> get list => _list;
   setList(String idUser) async {
     _list = await FollowSource.readFollowing(idUser);
     notifyListeners();
