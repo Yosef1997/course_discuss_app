@@ -15,10 +15,10 @@ class CSearch extends ChangeNotifier {
   }
 
   search(String searchQuery) {
-    if (searchQuery == 'Topic') {
+    if (_filter == 'Topic') {
       setTopics(searchQuery);
     } else {
-      setTopics(searchQuery);
+      setUsers(searchQuery);
     }
   }
 

@@ -12,6 +12,7 @@ import 'package:course_discuss_app/page/error_page.dart';
 import 'package:course_discuss_app/page/home_page.dart';
 import 'package:course_discuss_app/page/login_page.dart';
 import 'package:course_discuss_app/page/profile_page.dart';
+import 'package:course_discuss_app/page/search_page.dart';
 import 'package:course_discuss_app/page/update_topic_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -81,7 +82,7 @@ class AppRoute {
         path: search,
         builder: (context, state) => ChangeNotifierProvider(
           create: (_) => CSearch(),
-          child: const Scaffold(),
+          child: const SearchPage(),
         ),
       ),
       GoRoute(

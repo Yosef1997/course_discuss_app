@@ -49,11 +49,11 @@ class LoginPage extends StatelessWidget {
             colors: [Colors.blue, Colors.purple],
           ),
         ),
-        child: LayoutBuilder(builder: (context, Constraints) {
+        child: LayoutBuilder(builder: (context, constraints) {
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: Constraints.maxHeight,
+                minHeight: constraints.maxHeight,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
