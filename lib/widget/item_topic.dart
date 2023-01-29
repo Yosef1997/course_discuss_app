@@ -74,21 +74,26 @@ class ItemTopic extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: AppColor.primary.withOpacity(.2),
-                      borderRadius: BorderRadius.circular(4)),
-                  padding: const EdgeInsets.fromLTRB(12, 5, 8, 5),
-                  child: DView.textAction(
-                    () {
-                      context.push(AppRoute.detailTopic, extra: topic);
-                    },
-                    text: 'Detail',
-                    size: 14,
-                    color: Theme.of(context).primaryColor,
-                    iconRight: Icons.navigate_next,
-                    iconRightSize: 17,
-                    iconRightColor: Theme.of(context).primaryColor,
+                GestureDetector(
+                  onTap: () {
+                    context.push(AppRoute.detailTopic, extra: topic);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: AppColor.primary.withOpacity(.2),
+                        borderRadius: BorderRadius.circular(4)),
+                    padding: const EdgeInsets.fromLTRB(12, 5, 8, 5),
+                    child: DView.textAction(
+                      () {
+                        context.push(AppRoute.detailTopic, extra: topic);
+                      },
+                      text: 'Detail',
+                      size: 14,
+                      color: Theme.of(context).primaryColor,
+                      iconRight: Icons.navigate_next,
+                      iconRightSize: 17,
+                      iconRightColor: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ],
