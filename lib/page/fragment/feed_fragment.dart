@@ -38,6 +38,7 @@ class FeedFragment extends StatelessWidget {
                 );
               }
               return ListView.builder(
+                padding: const EdgeInsets.all(0),
                 itemCount: _.topics.length,
                 itemBuilder: (context, index) {
                   Topic topic = _.topics[index];

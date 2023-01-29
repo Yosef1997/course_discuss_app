@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:course_discuss_app/config/app_format.dart';
+import 'package:course_discuss_app/config/app_route.dart';
 import 'package:course_discuss_app/model/topic.dart';
 import 'package:d_button/d_button.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../config/api.dart';
 
@@ -43,7 +45,9 @@ class DetailTopicPage extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16),
         child: DButtonElevation(
-          onClick: () {},
+          onClick: () {
+            context.push(AppRoute.comment, extra: topic);
+          },
           height: 40,
           mainColor: Theme.of(context).primaryColor,
           child: Row(
