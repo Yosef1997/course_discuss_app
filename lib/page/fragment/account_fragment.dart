@@ -53,7 +53,7 @@ class AccountFragment extends StatelessWidget {
               base64Encode(bytes),
             ).then((success) {
               if (success) {
-                User? newUser = context.read<CUser>().data!..image;
+                User? newUser = context.read<CUser>().data!..image = name;
                 context.read<CUser>().data = newUser;
                 Session.setUser(newUser);
                 DInfo.snackBarSuccess(context, 'Success Update Image');
